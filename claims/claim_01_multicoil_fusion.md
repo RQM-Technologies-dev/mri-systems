@@ -5,12 +5,12 @@
 A coherence-aware quaternionic representation may improve multicoil fusion
 stability when channels disagree in phase/orientation-sensitive conditions.
 
-## Why an OEM would care
+## Why OEMs care
 
 More stable multicoil fusion can help reduce reconstruction variability in
 challenging scans and may improve confidence in downstream image quality.
 
-## Mechanism being tested
+## Technical mechanism being tested
 
 The test evaluates whether QCSM-style state fusion better captures coupled
 inter-coil behavior than complex-only magnitude fusion in controlled settings.
@@ -20,28 +20,42 @@ inter-coil behavior than complex-only magnitude fusion in controlled settings.
 - Baseline: standard inverse FFT plus RSS fusion.
 - Candidate: QCSM/coherence-aware placeholder reconstruction path.
 
+## Required code path
+
+- `src/qsg_mri/coil_state.py`
+- `src/qsg_mri/baselines.py`
+- `src/qsg_mri/reconstruction.py`
+- `src/qsg_mri/metrics.py`
+
 ## Required simulation
 
 - `simulations/multicoil_fusion/run.py`
 - Synthetic phantom with controlled coil phase disagreement.
 - Paired outputs for baseline and candidate from the same input.
 
-## Metrics
+## Required metrics
 
 - NMSE (relative to known phantom reference)
 - PSNR
 - Artifact energy
 - Mean coherence defect
 
-## Current status
+## Current evidence maturity
 
-Scaffolded research workflow. No achieved benchmark result is claimed.
+Concept defined; code scaffolded; synthetic simulation scaffolded.
+No achieved benchmark result is claimed unless measured artifacts are present.
 
 ## Limitations
 
 - Synthetic scenario only.
 - Placeholder candidate implementation.
 - Transferability to sequence-specific production workflows remains open.
+
+## Next proof step
+
+Generate reproducible `metrics.json` outputs from repeated synthetic runs, then
+prepare offline replay on a small deidentified multicoil dataset against an OEM
+internal baseline.
 
 ## Technical basis
 

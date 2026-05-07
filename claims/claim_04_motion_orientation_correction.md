@@ -5,12 +5,12 @@
 Orientation-aware quaternionic states may improve robustness to motion-driven
 artifacts in controlled reconstruction scenarios.
 
-## Why an OEM would care
+## Why OEMs care
 
 Motion sensitivity is a practical source of retakes and quality variability.
 Improved robustness can be valuable for throughput and user confidence.
 
-## Mechanism being tested
+## Technical mechanism being tested
 
 The mechanism tests whether coherence-aware candidate reconstruction better
 handles phase/orientation perturbations injected into multicoil k-space.
@@ -20,28 +20,42 @@ handles phase/orientation perturbations injected into multicoil k-space.
 - Baseline: standard complex reconstruction path (inverse FFT + RSS).
 - Candidate: QCSM/coherence-aware placeholder path under same perturbation.
 
+## Required code path
+
+- `src/qsg_mri/coil_state.py`
+- `src/qsg_mri/coherence.py`
+- `src/qsg_mri/reconstruction.py`
+- `src/qsg_mri/metrics.py`
+
 ## Required simulation
 
 - `simulations/motion_artifacts/run.py`
 - Synthetic line-wise phase modulation and coil-wise random phase offsets.
 - Paired baseline/candidate reconstructions with diagnostics.
 
-## Metrics
+## Required metrics
 
 - NMSE
 - PSNR
 - Artifact energy (ghosting/artifact proxy)
 - Mean coherence defect
 
-## Current status
+## Current evidence maturity
 
-Scaffolded research workflow. Target hypothesis only; no achieved result claim.
+Concept defined; code scaffolded; synthetic simulation scaffolded.
+Target hypothesis only; no achieved result claim without measured artifacts.
 
 ## Limitations
 
 - Synthetic perturbation model does not represent full patient/sequence dynamics.
 - Placeholder candidate implementation.
 - No clinical validation is implied.
+
+## Next proof step
+
+Run controlled motion perturbation sweeps with fixed seeds, compare ghosting
+proxy and artifact-energy trends to baseline, and stage offline deidentified
+replay against internal OEM reconstruction outputs.
 
 ## Technical basis
 
