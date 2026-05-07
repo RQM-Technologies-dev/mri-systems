@@ -1,16 +1,16 @@
 # Mission
 
-Build a research-grade software foundation that demonstrates where quaternionic representations improve MRI reconstruction workflows compared with conventional complex-only pipelines.
+Build a research-grade software foundation for testing whether quaternionic signal-state representations improve MRI reconstruction and analysis versus complex-only baselines.
 
 ## What we build
 
-- Reconstruction software and APIs
-- Calibration and artifact-reduction methods
-- Simulation and benchmarking workflows
-- OEM-facing technical evidence
+- MRI reconstruction research code
+- Multicoil fusion and coherence-analysis prototypes
+- Reproducible benchmark workflows
+- OEM-facing technical evidence for software integration paths
 
 ## What we do not build
 
-- MRI scanner hardware
-- Clinical decision systems
-- Regulated medical-device runtime controls
+- MRI hardware
+- Clinical diagnostic products
+- Medical-device runtime control software

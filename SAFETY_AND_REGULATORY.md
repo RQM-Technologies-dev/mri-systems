@@ -1,7 +1,18 @@
-# Safety and Regulatory Position
+# SAFETY AND REGULATORY
 
-This repository is for research software and algorithm prototyping only.
+This repository is **research software** for MRI reconstruction and analysis experiments.
 
-It does not provide medical diagnosis, treatment guidance, scanner control, or claims of regulatory clearance.
+It does **not** provide:
 
-MRI equipment itself is regulated medical-device hardware/software under applicable frameworks (for example, FDA 21 CFR 892.1000 and IEC 60601-2-33). Any production deployment requires formal quality, safety, and regulatory processes.
+- medical diagnosis
+- patient-care recommendations
+- scanner control functions
+- regulated medical-device runtime behavior
+
+## Positioning
+
+- Software focus: algorithm prototyping and benchmark comparison
+- Hardware scope: none (no MRI hardware design or control)
+- Clinical scope: none (no diagnostic claim or treatment claim)
+
+Any production clinical deployment would require separate regulatory, safety, quality-system, and validation processes outside the scope of this repository.
