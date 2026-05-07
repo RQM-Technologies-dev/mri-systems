@@ -24,6 +24,17 @@ without adopting it into a scanner product.
 7. Compare against baseline.
 8. Decide whether to test internal deidentified data.
 
+## Metrics interpretation guardrails
+
+- `run_completed: true` means the script executed and emitted its expected
+  output artifacts.
+- `synthetic_only: true` indicates controlled synthetic data was used.
+- `clinical_result: false` indicates no clinical performance claim is being made.
+- `result_scope: "synthetic_controlled_engineering_run"` marks the output as
+  engineering-only evidence.
+- `target_achieved: true` should only be used when measured outputs explicitly
+  demonstrate a predeclared target was met.
+
 ## What counts as promising
 
 - Measurable improvement in target metric
@@ -36,6 +47,7 @@ without adopting it into a scanner product.
 
 - Visual improvement without metric support
 - Synthetic-only success framed as clinical proof
+- A completed run (`run_completed`) framed as target attainment
 - Unrepeatable output
 - Unsupported claims
 

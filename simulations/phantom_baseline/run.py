@@ -107,11 +107,10 @@ def main() -> None:
         "baseline_method": "rss_ifft2_centered",
         "candidate_method": "qcsm_coherence_weighted_fusion_first_pass",
         "synthetic_only": True,
-        "achieved_result": True,
-        "nmse": candidate_nmse,
-        "psnr": candidate_psnr,
-        "artifact_energy": candidate_artifact,
-        "coherence_score": float(np.mean(coherence)),
+        "run_completed": True,
+        "clinical_result": False,
+        "result_scope": "synthetic_controlled_engineering_run",
+        "target_achieved": False,
         "runtime_seconds": runtime_seconds,
         "notes": (
             "Synthetic controlled engineering evidence only; not clinical evidence. "
@@ -129,6 +128,7 @@ def main() -> None:
             "psnr": candidate_psnr,
             "artifact_energy": candidate_artifact,
             "mean_coherence_defect": float(np.mean(defect)),
+            "mean_coherence_score": float(np.mean(coherence)),
         },
         "relative_change": {
             "nmse_percent": float(100.0 * (candidate_nmse - baseline_nmse) / (abs(baseline_nmse) + 1e-12)),
@@ -170,7 +170,11 @@ def main() -> None:
         "## Scenario\n"
         "- Name: `phantom_baseline`\n"
         "- Synthetic only: `true`\n"
+        "- Clinical result: `false`\n"
+        "- Result scope: `synthetic_controlled_engineering_run`\n"
         "- Description: controlled phantom baseline-vs-candidate demonstration.\n\n"
+        "## Synthetic-only disclaimer\n"
+        "These outputs are controlled synthetic engineering artifacts.\n\n"
         "## Input configuration\n"
         f"- seed: `{seed}`\n"
         f"- size: `{size}`\n"
@@ -191,6 +195,9 @@ def main() -> None:
         f"- Mean coherence defect: {float(np.mean(defect)):.6f}\n"
         f"- Mean coherence score: {float(np.mean(coherence)):.6f}\n"
         f"- Runtime (s): {runtime_seconds:.6f}\n\n"
+        "## Target status\n"
+        "- target_achieved: `false`\n"
+        "- Reason: no predeclared target is claimed as achieved in this synthetic run.\n\n"
         "## Artifact list\n"
         "- `phantom.npy`\n"
         "- `baseline_reconstruction.npy`\n"
@@ -203,8 +210,8 @@ def main() -> None:
         "- `config_snapshot.json`\n"
         f"- PNG note: {png_note}\n\n"
         "## Interpretation guardrail\n"
-        "These outputs are controlled synthetic engineering artifacts. They are intended to decide whether "
-        "deeper offline OEM replay is justified. They do not establish clinical performance.\n"
+        "These outputs are controlled synthetic engineering artifacts. They help decide whether deeper "
+        "offline OEM replay is justified. They do not establish clinical performance.\n"
     )
 
 

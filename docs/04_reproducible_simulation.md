@@ -28,18 +28,24 @@ Every scenario should record the following fields:
 - `baseline_method`
 - `candidate_method`
 - `synthetic_only`
-- `nmse`
-- `psnr` (where applicable)
-- `artifact_energy` (where applicable)
-- `coherence_score` (where applicable)
+- `run_completed`
+- `clinical_result`
+- `result_scope`
+- `target_achieved`
 - `runtime_seconds` (if implemented)
 - `notes`
-- `achieved_result`
 
 Guardrail:
-- `achieved_result` must be `false` unless the file contains a real measured
-  benchmark result from an actual run.
+- `run_completed` means the script finished and produced output artifacts.
+- `target_achieved` means a predeclared research target was actually met in
+  measured outputs.
 - `synthetic_only` should remain `true` for controlled synthetic demonstrations.
+- `clinical_result` should remain `false` for synthetic runs.
+- `result_scope` should be `synthetic_controlled_engineering_run` for these
+  scenarios.
+- Synthetic engineering outputs are not clinical outputs.
+- Do not mark research targets as achieved unless measured artifacts explicitly
+  demonstrate target attainment.
 
 Recommended detail structure (in addition to required top-level fields):
 
@@ -56,7 +62,8 @@ Recommended detail structure (in addition to required top-level fields):
     "nmse": 0.0,
     "psnr": 0.0,
     "artifact_energy": 0.0,
-    "mean_coherence_defect": 0.0
+    "mean_coherence_defect": 0.0,
+    "mean_coherence_score": 0.0
   },
   "relative_change": {
     "nmse_percent": 0.0,
@@ -73,6 +80,7 @@ For each scenario:
 2. Generate all required artifacts in a deterministic output structure.
 3. Write machine-readable metrics and a short human-readable summary.
 4. Keep claims as research targets unless measured outputs are present.
+5. Do not treat synthetic metrics as clinical evidence.
 
 ## How to read results
 
