@@ -1,10 +1,5 @@
 # Docs index
 
-- `index.md`
-- `architecture.md`
-- `benchmarks.md`
-- `validation.md`
-- `regulatory-positioning.md`
 - `01_problem.md`
 - `02_better_representation.md`
 - `03_controlled_proof.md`
