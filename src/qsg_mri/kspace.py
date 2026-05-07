@@ -2,7 +2,11 @@ import numpy as np
 
 
 def ifft2c(kspace: np.ndarray) -> np.ndarray:
-    """Centered 2D inverse FFT."""
+    """Run centered 2D inverse FFT used for MRI k-space processing.
+
+    The input is shifted to move k-space center to the FFT origin, inverse
+    transformed, then shifted back to center image-space coordinates.
+    """
     return np.fft.ifftshift(np.fft.ifft2(np.fft.fftshift(kspace)))
 
 
