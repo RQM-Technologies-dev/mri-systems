@@ -36,6 +36,9 @@ offline evaluation first.
 ## Current status
 
 - Research prototype with synthetic simulations and reproducible artifacts.
+- Simulation outputs may show measured synthetic results from controlled runs,
+  but those results are not clinical evidence and do not establish target
+  achievement unless explicitly stated.
 - No clinical claims and no regulatory claims.
 - No achieved benchmark claims are reported unless explicitly measured artifacts
   are included; target ranges are research targets.
@@ -56,6 +59,7 @@ python simulations/phantom_baseline/run.py
 - `OEM_BRIEF.md`: decision-maker brief and evaluation path.
 - `TECHNICAL_EVALUATION_GUIDE.md`: practical offline workflow for OEM engineers.
 - `docs/`: narrative-first technical walkthrough.
+- `docs/README.md` and `docs/08_artifact_schema.md`: doc navigation and artifact contract.
 - `claims/`: testable product hypotheses and evidence plans.
 - `examples/README.md`: practical script-level example guide.
 - `simulations/`: reproducible controlled benchmark scripts.

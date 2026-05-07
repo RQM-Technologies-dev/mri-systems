@@ -25,3 +25,17 @@ goals, not reported results.
 
 No row is marked as externally validated unless measured external or OEM replay
 evidence is available.
+
+## Synthetic metrics schema interpretation
+
+For simulation artifacts, use the following semantics consistently:
+
+- `run_completed` means the script produced output artifacts.
+- `synthetic_only` means controlled synthetic data was used.
+- `clinical_result` remains `false` for synthetic runs.
+- `result_scope` should be `synthetic_controlled_engineering_run`.
+- `target_achieved` is `true` only when measured outputs explicitly demonstrate
+  a predeclared target was met.
+
+Synthetic run completion is not clinical evidence and does not, by itself,
+establish target achievement.
