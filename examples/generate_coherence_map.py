@@ -5,7 +5,7 @@ from __future__ import annotations
 import numpy as np
 
 from qsg_mri.phantoms import synthetic_multicoil_sensitivities, synthetic_phantom
-from qsg_mri.reconstruction import qcsm_reconstruction_placeholder
+from qsg_mri.reconstruction import qcsm_coherence_weighted_fusion
 
 
 def main() -> None:
@@ -16,7 +16,7 @@ def main() -> None:
     coil_images = sens * phantom[None, :, :]
     multicoil_kspace = np.fft.ifftshift(np.fft.fft2(np.fft.fftshift(coil_images, axes=(-2, -1)), axes=(-2, -1)), axes=(-2, -1))
 
-    out = qcsm_reconstruction_placeholder(multicoil_kspace)
+    out = qcsm_coherence_weighted_fusion(multicoil_kspace)
     coherence_defect = out["coherence_defect"]
     print("coherence defect map shape:", coherence_defect.shape)
     print("coherence defect range:", float(np.min(coherence_defect)), float(np.max(coherence_defect)))

@@ -37,3 +37,24 @@ def coherence_score(qs: np.ndarray, weights: np.ndarray | None = None, eps: floa
 def coherence_defect(qs: np.ndarray, weights: np.ndarray | None = None) -> float:
     """Return D_coh = 1 - C_MRI as a research defect diagnostic."""
     return float(1.0 - coherence_score(qs=qs, weights=weights))
+
+
+def coherence_map_from_fixed_axis_coils(coil_images: np.ndarray, eps: float = 1e-12) -> np.ndarray:
+    """Compute per-pixel coherence map from fixed-axis complex coil images.
+
+    For complex-valued coils interpreted as fixed-axis quaternion states, this map
+    is equivalent to:
+        abs(sum(coils)) / (sum(abs(coils)) + eps)
+    """
+    coil_images = np.asarray(coil_images, dtype=np.complex128)
+    if coil_images.ndim != 3:
+        raise ValueError("coil_images must have shape (coils, height, width).")
+
+    coherent_sum = np.abs(np.sum(coil_images, axis=0))
+    incoherent_sum = np.sum(np.abs(coil_images), axis=0)
+    return coherent_sum / (incoherent_sum + eps)
+
+
+def coherence_defect_map_from_fixed_axis_coils(coil_images: np.ndarray, eps: float = 1e-12) -> np.ndarray:
+    """Compute per-pixel coherence-defect map (1 - coherence map)."""
+    return 1.0 - coherence_map_from_fixed_axis_coils(coil_images=coil_images, eps=eps)

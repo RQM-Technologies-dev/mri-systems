@@ -24,6 +24,13 @@ class MetricsTests(unittest.TestCase):
         est = np.ones((2, 2))
         self.assertAlmostEqual(artifact_energy(ref, est), 4.0)
 
+    def test_metrics_are_finite_for_normal_arrays(self):
+        ref = np.array([[0.1, 0.2], [0.3, 0.4]], dtype=float)
+        est = np.array([[0.12, 0.18], [0.28, 0.43]], dtype=float)
+        self.assertTrue(np.isfinite(nmse(ref, est)))
+        self.assertTrue(np.isfinite(psnr(ref, est)))
+        self.assertTrue(np.isfinite(artifact_energy(ref, est)))
+
 
 if __name__ == "__main__":
     unittest.main()

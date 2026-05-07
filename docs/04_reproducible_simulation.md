@@ -27,6 +27,7 @@ Every scenario should record the following fields:
 - `scenario_name`
 - `baseline_method`
 - `candidate_method`
+- `synthetic_only`
 - `nmse`
 - `psnr` (where applicable)
 - `artifact_energy` (where applicable)
@@ -38,6 +39,31 @@ Every scenario should record the following fields:
 Guardrail:
 - `achieved_result` must be `false` unless the file contains a real measured
   benchmark result from an actual run.
+- `synthetic_only` should remain `true` for controlled synthetic demonstrations.
+
+Recommended detail structure (in addition to required top-level fields):
+
+```json
+{
+  "baseline": {
+    "method": "rss_ifft2_centered",
+    "nmse": 0.0,
+    "psnr": 0.0,
+    "artifact_energy": 0.0
+  },
+  "candidate": {
+    "method": "qcsm_coherence_weighted_fusion_first_pass",
+    "nmse": 0.0,
+    "psnr": 0.0,
+    "artifact_energy": 0.0,
+    "mean_coherence_defect": 0.0
+  },
+  "relative_change": {
+    "nmse_percent": 0.0,
+    "artifact_energy_percent": 0.0
+  }
+}
+```
 
 ## Simulation execution expectations
 
