@@ -1,21 +1,52 @@
 # Claim 01: Multicoil fusion robustness
 
-## Claim
+## Plain-language claim
 
-Quaternionic coil-state fusion may improve multicoil reconstruction robustness in
-settings with elevated inter-coil phase/orientation disagreement.
+A coherence-aware quaternionic representation may improve multicoil fusion
+stability when channels disagree in phase/orientation-sensitive conditions.
 
-## Evidence needed
+## Why an OEM would care
 
-- Synthetic multicoil experiments with known reference image
-- Baseline RSS comparison
-- Coherence-aware fusion comparison
-- Error and coherence-defect map analysis
+More stable multicoil fusion can help reduce reconstruction variability in
+challenging scans and may improve confidence in downstream image quality.
 
-## Research target
+## Mechanism being tested
 
-5-15% relative error/coherence improvement in controlled tests.
+The test evaluates whether QCSM-style state fusion better captures coupled
+inter-coil behavior than complex-only magnitude fusion in controlled settings.
 
-## Scope note
+## Baseline comparison
 
-Target only; not reported as achieved in this repository.
+- Baseline: standard inverse FFT plus RSS fusion.
+- Candidate: QCSM/coherence-aware placeholder reconstruction path.
+
+## Required simulation
+
+- `simulations/multicoil_fusion/run.py`
+- Synthetic phantom with controlled coil phase disagreement.
+- Paired outputs for baseline and candidate from the same input.
+
+## Metrics
+
+- NMSE (relative to known phantom reference)
+- PSNR
+- Artifact energy
+- Mean coherence defect
+
+## Current status
+
+Scaffolded research workflow. No achieved benchmark result is claimed.
+
+## Limitations
+
+- Synthetic scenario only.
+- Placeholder candidate implementation.
+- Transferability to sequence-specific production workflows remains open.
+
+## Technical basis
+
+Per-coil state model under evaluation:
+
+\[
+q_c(r) = A_c(r)\left[\cos \phi_c(r) + u_c(r)\sin \phi_c(r)\right]
+\]

@@ -1,4 +1,8 @@
-"""Synthetic phantom and coil sensitivity generators for controlled demos."""
+"""Synthetic phantom generators for controlled reconstruction benchmarks.
+
+These utilities create reproducible synthetic inputs for offline evaluation.
+They are not patient-data tools.
+"""
 
 from __future__ import annotations
 
@@ -6,7 +10,7 @@ import numpy as np
 
 
 def synthetic_phantom(size: int = 128) -> np.ndarray:
-    """Generate a simple synthetic MRI-like phantom with concentric structure."""
+    """Generate deterministic synthetic reference image for metric comparisons."""
     yy, xx = np.meshgrid(np.linspace(-1.0, 1.0, size), np.linspace(-1.0, 1.0, size), indexing="ij")
     r = np.sqrt(xx**2 + yy**2)
     phantom = np.zeros((size, size), dtype=float)
@@ -17,7 +21,7 @@ def synthetic_phantom(size: int = 128) -> np.ndarray:
 
 
 def synthetic_multicoil_sensitivities(num_coils: int = 8, size: int = 128) -> np.ndarray:
-    """Generate simplified complex sensitivity maps with angular phase offsets."""
+    """Generate simplified multicoil sensitivities for controlled stress tests."""
     yy, xx = np.meshgrid(np.linspace(-1.0, 1.0, size), np.linspace(-1.0, 1.0, size), indexing="ij")
     angle = np.arctan2(yy, xx)
     radius = np.sqrt(xx**2 + yy**2)

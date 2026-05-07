@@ -1,8 +1,10 @@
-"""k-space helpers for MRI software research.
+"""k-space helpers for MRI software-only evaluation workflows.
 
 `k` is a spatial-frequency coordinate. It is not anatomical radius.
 `k=0` corresponds to low spatial frequency content, and larger |k| corresponds
 to finer spatial detail.
+
+These utilities support controlled benchmark setup and analysis only.
 """
 
 from __future__ import annotations

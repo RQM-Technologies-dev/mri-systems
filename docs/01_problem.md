@@ -1,39 +1,38 @@
 # 01 - Problem
 
-Standard MRI acquisition is complex-valued and phase-sensitive, but modern
-reconstruction failure modes are not only complex-scalar problems.
+MRI systems already acquire high-value complex multicoil data. The challenge is
+not whether the scanner collects useful measurements, but how reliably software
+reconstruction handles coupled failure modes across coils and time.
 
-Canonical per-coil measurement model:
+In practical workflows, coherence failures often appear as:
+
+- coil disagreement in phase-sensitive regions
+- sensitivity mismatch between channels
+- motion-driven phase inconsistency
+- undersampling artifacts concentrated in unstable regions
+- local reconstruction instability that is hard to isolate with magnitude-only
+  diagnostics
+
+Many current pipelines address these with separate correction layers. That can
+work well, but it can also make interactions between phase, geometry, motion,
+and multichannel coherence harder to model as one problem.
+
+This repository frames the issue as an engineering evaluation question:
+
+1. Can a candidate representation layer better capture coupled coherence
+   behavior?
+2. Can that be tested in controlled benchmark settings with reproducible
+   evidence artifacts?
+3. Can teams evaluate integration feasibility without changing scanner hardware?
+
+## Technical note
+
+Standard per-coil measurement model:
 
 \[
 y_c(k) = \int_\Omega \rho(r) s_c(r) \exp(-i 2\pi k\cdot r) dr + \epsilon_c(k)
 \]
 
-where:
-
-- \(y_c(k)\): measured k-space data for coil \(c\)
-- \(k\): Fourier-space / spatial-frequency coordinate
-- \(r\): image-space coordinate
-- \(\rho(r)\): tissue magnetization image
-- \(s_c(r)\): coil sensitivity map
-- \(\epsilon_c(k)\): noise
-
-Important interpretation note:
-
-- \(k\) is **not** anatomical radius.
-- \(k=0\) is low spatial frequency.
-- larger \(|k|\) corresponds to finer spatial detail.
-
-In practical software reconstruction, quality is affected by:
-
-- multichannel receiver-coil interactions
-- coil sensitivity mismatch
-- phase disagreement
-- field variation
-- undersampling
-- motion artifacts
-- reconstruction instability
-- local coherence loss
-
-The repository treats these as coupled software reconstruction issues suitable
-for controlled evidence building.
+where \(k\) is spatial-frequency coordinate (not anatomical radius), \(r\) is
+image-space coordinate, \(\rho(r)\) is tissue magnetization, \(s_c(r)\) is coil
+sensitivity, and \(\epsilon_c(k)\) is noise.

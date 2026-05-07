@@ -1,4 +1,8 @@
-"""Baseline MRI reconstruction helpers."""
+"""Baseline MRI reconstruction helpers for controlled benchmark comparison.
+
+These functions define reference behavior used when evaluating candidate
+representation layers in offline studies.
+"""
 
 from __future__ import annotations
 
@@ -16,6 +20,6 @@ def root_sum_of_squares(coil_images: np.ndarray, axis: int = 0) -> np.ndarray:
 
 
 def baseline_multicoil_from_kspace(multicoil_kspace: np.ndarray) -> np.ndarray:
-    """Apply centered inverse FFT per coil and combine with RSS."""
+    """Apply centered inverse FFT per coil and combine with RSS baseline."""
     coil_images = np.stack([inverse_fft2_centered(k) for k in multicoil_kspace], axis=0)
     return root_sum_of_squares(coil_images, axis=0)

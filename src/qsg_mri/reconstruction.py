@@ -1,7 +1,8 @@
 """MRI reconstruction helpers.
 
-This module is intentionally minimal and research-oriented. It is not
-production-grade MRI reconstruction software.
+This module is intentionally minimal and research-oriented. It supports
+baseline-vs-candidate comparisons and research metric generation only.
+It is not production-grade or clinically validated reconstruction software.
 """
 
 from __future__ import annotations
@@ -13,7 +14,7 @@ from .coherence import coherence_score
 
 
 def baseline_reconstruction(multicoil_kspace: np.ndarray) -> np.ndarray:
-    """Baseline multicoil reconstruction via inverse FFT + RSS."""
+    """Baseline multicoil reconstruction used as controlled reference output."""
     return baseline_multicoil_from_kspace(multicoil_kspace)
 
 
@@ -21,8 +22,8 @@ def qcsm_reconstruction_placeholder(multicoil_kspace: np.ndarray) -> dict[str, n
     """Placeholder QCSM-style fusion.
 
     The function builds per-pixel quaternionic states from magnitude and phase
-    moments, then computes a coherence-defect map. This is a controlled research
-    baseline and not a validated clinical reconstruction method.
+    moments, then computes a coherence-defect map for candidate-method
+    comparisons. This is research scaffolding, not clinical validation.
     """
     coil_images = np.stack([inverse_fft2_centered(k) for k in multicoil_kspace], axis=0)
     mag = np.abs(coil_images)
