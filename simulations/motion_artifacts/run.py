@@ -1,5 +1,7 @@
 """Synthetic motion/orientation artifact simulation."""
 
+# ruff: noqa: E402
+
 from __future__ import annotations
 
 import json

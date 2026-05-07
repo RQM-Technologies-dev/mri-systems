@@ -1,5 +1,7 @@
 """Synthetic multicoil fusion stress test with coil phase disagreement."""
 
+# ruff: noqa: E402
+
 from __future__ import annotations
 
 import json
