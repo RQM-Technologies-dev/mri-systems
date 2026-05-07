@@ -1,18 +1,35 @@
 # SAFETY AND REGULATORY
 
-This repository is **research software** for MRI reconstruction and analysis experiments.
+## Intended use
 
-It does **not** provide:
+This repository is **research software only** for MRI reconstruction and medical
+imaging method development.
 
-- medical diagnosis
-- patient-care recommendations
-- scanner control functions
-- regulated medical-device runtime behavior
+## Explicit non-clinical scope
 
-## Positioning
+This repository provides:
 
-- Software focus: algorithm prototyping and benchmark comparison
-- Hardware scope: none (no MRI hardware design or control)
-- Clinical scope: none (no diagnostic claim or treatment claim)
+- no diagnosis
+- no clinical decision support
+- no scanner control
+- no patient-care workflow integration
 
-Any production clinical deployment would require separate regulatory, safety, quality-system, and validation processes outside the scope of this repository.
+This repository is:
+
+- not FDA-cleared medical-device software
+- not approved for patient care
+- not a replacement for clinical imaging systems
+
+## Data scope
+
+Use synthetic and/or deidentified research data only.
+
+## Hardware scope
+
+No MRI hardware modifications are included. The software assumes existing
+scanner hardware and standard complex k-space measurements.
+
+## Regulatory note
+
+Any clinical deployment would require independent quality management, safety
+validation, and regulatory processes outside this repository.

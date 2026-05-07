@@ -2,27 +2,49 @@
 
 ## Objective
 
-Test whether quaternionic coil-state modeling can produce a **5-15% relative improvement** in reconstruction error, artifact localization, or phase/coherence stability on controlled multicoil MRI datasets versus standard complex baselines.
+Build controlled, reproducible evidence for whether a quaternionic reconstruction
+layer can improve coherence-sensitive MRI software outcomes relative to standard
+complex baselines.
 
 ## Methods compared
 
-1. Baseline: inverse FFT + RSS coil combination
-2. Sensitivity-informed baseline: SENSE-style reconstruction where maps are available
-3. Proposed: Quaternionic Coil-State Model (QCSM) fusion
+1. Baseline: centered inverse FFT + root-sum-of-squares (RSS)
+2. Baseline variant: sensitivity-informed fusion where sensitivity maps exist
+3. Proposed: Quaternionic Coil-State Model (QCSM) placeholder fusion with
+   coherence outputs
+
+## Controlled scenarios
+
+- Phantom baseline reconstruction
+- Multicoil fusion under coil-state disagreement
+- Artifact localization via coherence defect maps
+- Undersampling stress tests
+- Motion/orientation perturbation stress tests
 
 ## Primary metrics
 
 - NMSE
 - PSNR
-- SSIM
-- Artifact energy
-- Phase consistency
-- Coil-combination stability
-- Motion-corrupted reconstruction error
+- artifact energy
+- coherence score / coherence defect summaries
+- optional SSIM placeholder (documented as non-validated in current package)
 
-## Evaluation policy
+## Research targets (not achieved results)
 
-- Report per-dataset and aggregated statistics
-- No clinical efficacy claims
-- No guaranteed superiority claims
-- Conclusions limited to tested acquisition settings
+- Multicoil fusion: 5-15% relative error/coherence improvement target
+- Artifact localization: 10-25% artifact-region detection improvement target
+- Undersampling robustness: 5-12% relative NMSE reduction target
+- Motion/orientation robustness: 10-20% ghosting/artifact reduction target
+
+## Reproducibility requirements
+
+- Deterministic seeds in config files
+- Versioned simulation scripts and configs
+- Saved `metrics.json`, `summary.md`, and maps per simulation run
+
+## Reporting policy
+
+- No clinical claims
+- No regulatory claims
+- No superiority claim without reproducible measured evidence
+- Conclusions constrained to tested synthetic/offline conditions

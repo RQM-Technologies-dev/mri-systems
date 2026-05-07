@@ -1,22 +1,41 @@
+"""Evaluation metrics for controlled MRI reconstruction experiments."""
+
+from __future__ import annotations
+
 import numpy as np
 
 
 def nmse(reference: np.ndarray, estimate: np.ndarray, eps: float = 1e-12) -> float:
-    num = np.linalg.norm(reference - estimate) ** 2
-    den = np.linalg.norm(reference) ** 2 + eps
-    return float(num / den)
+    """Normalized mean squared error."""
+    reference = np.asarray(reference, dtype=float)
+    estimate = np.asarray(estimate, dtype=float)
+    return float(np.linalg.norm(reference - estimate) ** 2 / (np.linalg.norm(reference) ** 2 + eps))
 
 
 def psnr(reference: np.ndarray, estimate: np.ndarray, data_range: float | None = None, eps: float = 1e-12) -> float:
-    mse = np.mean((reference - estimate) ** 2)
+    """Peak signal-to-noise ratio."""
+    reference = np.asarray(reference, dtype=float)
+    estimate = np.asarray(estimate, dtype=float)
+    mse = float(np.mean((reference - estimate) ** 2))
     if mse <= eps:
         return float("inf")
-    peak = np.max(reference) - np.min(reference) if data_range is None else data_range
-    peak = max(float(peak), eps)
-    return float(20 * np.log10(peak) - 10 * np.log10(float(mse)))
+    peak = float(np.max(reference) - np.min(reference)) if data_range is None else float(data_range)
+    peak = max(peak, eps)
+    return float(20.0 * np.log10(peak) - 10.0 * np.log10(mse))
+
+
+def ssim_placeholder(reference: np.ndarray, estimate: np.ndarray) -> float:
+    """Placeholder SSIM function.
+
+    A full SSIM implementation is intentionally omitted in this minimal package
+    to avoid introducing unvalidated behavior.
+    """
+    raise NotImplementedError("SSIM is intentionally omitted in this minimal package.")
 
 
 def artifact_energy(reference: np.ndarray, estimate: np.ndarray) -> float:
-    """L2 energy of residual artifacts."""
+    """Residual artifact energy (L2)."""
+    reference = np.asarray(reference, dtype=float)
+    estimate = np.asarray(estimate, dtype=float)
     residual = estimate - reference
-    return float(np.sum(np.abs(residual) ** 2))
+    return float(np.sum(residual**2))

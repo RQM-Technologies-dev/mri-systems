@@ -1,21 +1,46 @@
-"""qsg_mri: quaternion-native MRI reconstruction research primitives."""
+"""qsg_mri: research software for quaternionic MRI reconstruction studies."""
 
-from .coil_state import coil_state_from_magnitude_phase, project_to_complex
-from .kspace import ifft2c, is_high_spatial_frequency, rss_combine, spatial_frequency_radius
+from .baselines import baseline_multicoil_from_kspace, inverse_fft2_centered, root_sum_of_squares
+from .coherence import coherence_defect, coherence_score
+from .coil_state import construct_coil_state, multicoil_quaternionic_fusion, pack_two_complex_channels
+from .kspace import centered_frequency_grid, kspace_radius
 from .metrics import artifact_energy, nmse, psnr
-from .quaternion import IDENTITY, Quaternion, from_polar_state, normalize_axis
+from .phantoms import synthetic_multicoil_sensitivities, synthetic_phantom
+from .quaternion import (
+    IDENTITY,
+    FIXED_AXIS_I,
+    conjugate,
+    fixed_axis_complex_state,
+    from_axis_angle,
+    multiply,
+    norm,
+    normalize,
+)
+from .reconstruction import baseline_reconstruction, qcsm_reconstruction_placeholder
 
 __all__ = [
-    "Quaternion",
     "IDENTITY",
-    "normalize_axis",
-    "from_polar_state",
-    "ifft2c",
-    "rss_combine",
-    "spatial_frequency_radius",
-    "is_high_spatial_frequency",
-    "coil_state_from_magnitude_phase",
-    "project_to_complex",
+    "FIXED_AXIS_I",
+    "conjugate",
+    "norm",
+    "normalize",
+    "multiply",
+    "from_axis_angle",
+    "fixed_axis_complex_state",
+    "kspace_radius",
+    "centered_frequency_grid",
+    "construct_coil_state",
+    "pack_two_complex_channels",
+    "multicoil_quaternionic_fusion",
+    "coherence_score",
+    "coherence_defect",
+    "inverse_fft2_centered",
+    "root_sum_of_squares",
+    "baseline_multicoil_from_kspace",
+    "baseline_reconstruction",
+    "qcsm_reconstruction_placeholder",
+    "synthetic_phantom",
+    "synthetic_multicoil_sensitivities",
     "nmse",
     "psnr",
     "artifact_energy",

@@ -1,0 +1,5 @@
+seed: 13
+size: 96
+coils: 8
+artifact_scale: 0.35
+output_dir: outputs

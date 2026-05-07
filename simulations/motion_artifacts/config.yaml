@@ -1,0 +1,5 @@
+seed: 19
+size: 96
+coils: 8
+motion_strength: 1.2
+output_dir: outputs

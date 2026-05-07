@@ -1,0 +1,5 @@
+seed: 7
+size: 64
+coils: 4
+noise_std: 0.01
+output_dir: outputs

@@ -1,32 +1,40 @@
 # ROADMAP
 
-## Stage 0 (current): technical cleanup and canonicalization
+## 1) Problem framing and baseline lock
 
-- Align documentation to a single MRI-first framing
-- Define Quaternionic Coil-State Model (QCSM)
-- Keep explicit complex-data fidelity constraints
-- Remove clinical/regulatory overclaim language
+- Keep standard complex MRI forward model explicit.
+- Standardize baseline reconstruction and metric definitions.
+- Document why coherence failures matter for multicoil workflows.
 
-## Stage 1: baseline reproductions
+## 2) Better representation implementation
 
-- Inverse FFT + RSS baseline
-- Sensitivity-informed baseline (SENSE-style where available)
-- Reproducible scripts and dataset manifests
+- Implement quaternionic lift and fixed-axis complex special case in `qsg_mri`.
+- Define coil-state representation and packing utilities.
+- Preserve complex-data compatibility and projection path.
 
-## Stage 2: QCSM MVP
+## 3) Controlled proof layer
 
-- Quaternionic coil-state representation per coil
-- Projection-back data-fidelity loops to measured complex k-space
-- Initial ablations on phase/coherence-sensitive failure modes
+- Publish proof notes for:
+  - complex-as-fixed-axis equivalence
+  - quaternionic coil-state model
+  - projection back to complex k-space
+  - coherence metric derivation
+- Tie each proof to testable software functions.
 
-## Stage 3: benchmark expansion
+## 4) Reproducible simulation harness
 
-- Undersampling and motion-corruption stress tests
-- Artifact-energy and phase-consistency analysis
-- Runtime/memory profiling
+- Maintain simulation folders with deterministic configs.
+- Produce baseline, quaternionic/coherence-aware output, maps, and metrics.
+- Keep all demonstrations clearly synthetic unless otherwise documented.
 
-## Stage 4: OEM-facing evidence package
+## 5) Integration path for OEM workflows
 
-- Reproducible benchmark reports
-- Integration guidance for software-only reconstruction upgrade paths
-- Scope-limited conclusions tied to tested datasets and protocols
+- Add research plugin path on top of existing preprocessing.
+- Keep scanner hardware unchanged.
+- Validate offline on recorded multicoil k-space before any runtime integration.
+
+## 6) Software package maturity
+
+- Expand from placeholder QCSM functions to validated reconstruction blocks.
+- Strengthen tests, reproducibility checks, and benchmark automation.
+- Continue strict non-clinical, research-only scope unless separately validated.

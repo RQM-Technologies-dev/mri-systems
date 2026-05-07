@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "qsg_mri"
 version = "0.1.0"
-description = "Quaternion-native software methods for MRI reconstruction research"
+description = "Research software for quaternionic MRI reconstruction experiments"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = ["numpy>=1.24"]

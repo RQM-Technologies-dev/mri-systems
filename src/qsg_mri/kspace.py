@@ -1,26 +1,23 @@
-"""k-space helpers for MRI reconstruction baselines.
+"""k-space helpers for MRI software research.
 
-Note: k-space coordinates are spatial-frequency coordinates, not anatomical radius.
+`k` is a spatial-frequency coordinate. It is not anatomical radius.
+`k=0` corresponds to low spatial frequency content, and larger |k| corresponds
+to finer spatial detail.
 """
+
+from __future__ import annotations
 
 import numpy as np
 
 
-def ifft2c(kspace: np.ndarray) -> np.ndarray:
-    """Centered 2D inverse FFT (complex k-space -> image space)."""
-    return np.fft.ifftshift(np.fft.ifft2(np.fft.fftshift(kspace)))
+def kspace_radius(kx: float, ky: float, kz: float | None = None) -> float:
+    """Return Fourier-space radius |k| from k-space coordinates."""
+    if kz is None:
+        return float(np.sqrt(kx**2 + ky**2))
+    return float(np.sqrt(kx**2 + ky**2 + kz**2))
 
 
-def rss_combine(coil_images: np.ndarray, axis: int = 0) -> np.ndarray:
-    """Root-sum-of-squares coil combination."""
-    return np.sqrt(np.sum(np.abs(coil_images) ** 2, axis=axis))
-
-
-def spatial_frequency_radius(kx: float, ky: float) -> float:
-    """Return |k| in Fourier space; larger values indicate finer spatial detail."""
-    return float(np.hypot(kx, ky))
-
-
-def is_high_spatial_frequency(kx: float, ky: float, threshold: float) -> bool:
-    """Classify whether a k-space point is beyond a chosen high-frequency threshold."""
-    return spatial_frequency_radius(kx, ky) >= threshold
+def centered_frequency_grid(shape: tuple[int, ...]) -> tuple[np.ndarray, ...]:
+    """Return centered frequency coordinate grids for the given shape."""
+    axes = [np.fft.fftshift(np.fft.fftfreq(n)) for n in shape]
+    return np.meshgrid(*axes, indexing="ij")
