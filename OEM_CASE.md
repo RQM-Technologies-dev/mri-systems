@@ -1,10 +1,12 @@
 # OEM Case
 
-The repository is structured to provide OEM-facing technical evidence for quaternion-native MRI software methods.
+This repository provides OEM-facing technical evidence for a software-only reconstruction upgrade path compatible with existing complex k-space measurements.
 
 Primary evidence targets:
 
-- Artifact energy reduction at fixed undersampling rate
-- Reconstruction quality retention at higher acceleration factors
-- Better phase consistency and multicoil fusion stability
-- Runtime and memory impact under reproducible benchmark settings
+- reconstruction error reduction under controlled multicoil benchmarks
+- artifact-energy and phase-consistency behavior under undersampling/motion stress
+- coil-combination stability versus complex baselines
+- runtime and memory impact under reproducible settings
+
+No clinical efficacy or regulatory-clearance claims are made in this repository.

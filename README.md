@@ -1,21 +1,33 @@
 # MRI-systems
 
-Quaternion-native software methods for MRI reconstruction, calibration, and multichannel signal representation.
+Quaternion-native research software for MRI reconstruction, multicoil fusion, artifact analysis, and phase/coherence modeling.
 
-MRI systems acquire phase-sensitive resonance data across receiver coils, gradients, and spatial frequency domains. Standard pipelines represent this data primarily through complex-valued k-space and then manage coil geometry, phase drift, motion, and reconstruction artifacts through separate correction layers.
+MRI systems acquire complex-valued k-space data from phase-sensitive electromagnetic resonance measurements. Modern MRI reconstruction must also manage multichannel receiver coils, coil sensitivity maps, field variation, motion, undersampling, and artifact structure.
 
-MRI-systems explores a quaternionic upgrade path: representing MRI signal structure as a coherent geometric object rather than a collection of loosely coupled complex channels.
+MRI-systems explores a quaternionic upgrade path: representing local MRI signal structure as a coherent geometric state rather than as disconnected complex channels and correction layers.
 
 This repository is research software. It does not provide medical diagnosis, clinical recommendations, scanner control, or regulated medical-device functionality.
 
-## Scope
+## Canonical model baseline
 
-RQM Technologies develops quaternion-native software methods for MRI reconstruction, calibration, artifact reduction, and multichannel signal representation.
+For coil \(c\), measured MRI k-space data is modeled as:
 
-## Central thesis
+\[
+y_c(k) = \int_\Omega \rho(r) s_c(r)e^{-i2\pi k\cdot r}\,dr + \epsilon_c(k)
+\]
 
-Standard MRI reconstruction is fundamentally complex-valued, but modern MRI systems are multichannel, orientation-dependent, and phase-sensitive. Quaternionic representations can encode one scalar and three coupled directional or phase components in a single object.
+The practical reconstruction goal is still to recover image content from sampled complex k-space data. This project tests whether lifting internal reconstruction state into quaternionic form can improve coherence-sensitive failure modes while remaining compatible with existing scanners.
 
-## MVP focus
+## Core thesis
 
-The first MVP in this repository is quaternionic multicoil fusion for MRI reconstruction, benchmarked against baseline inverse FFT + root-sum-of-squares coil combination.
+- Complex numbers are sufficient for single-axis phase modeling.
+- MRI errors are often coherence errors across phase, coil geometry, orientation, and motion.
+- Quaternionic methods may help when those coupled coherence terms dominate quality loss.
+
+## First MVP target
+
+Quaternionic multicoil fusion for MRI reconstruction, benchmarked against:
+
+- inverse FFT + root-sum-of-squares (RSS)
+- sensitivity-map-informed baseline (SENSE-style where appropriate)
+- Quaternionic Coil-State Model (QCSM) fusion
