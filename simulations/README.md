@@ -9,7 +9,7 @@ Each simulation includes:
 - `config.yaml`: editable parameters
 - output directory creation
 - baseline reconstruction output
-- quaternionic/coherence-aware placeholder output
+- first-pass quaternionic/coherence-aware candidate output
 - error map
 - coherence defect map
 - `metrics.json`

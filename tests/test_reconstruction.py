@@ -2,7 +2,7 @@ import unittest
 
 import numpy as np
 
-from qsg_mri.reconstruction import baseline_reconstruction, qcsm_reconstruction_placeholder
+from qsg_mri.reconstruction import baseline_reconstruction, qcsm_coherence_weighted_fusion
 
 
 class ReconstructionTests(unittest.TestCase):
@@ -11,9 +11,12 @@ class ReconstructionTests(unittest.TestCase):
         image = baseline_reconstruction(multicoil_kspace)
         self.assertEqual(image.shape, (8, 8))
 
-    def test_qcsm_placeholder_outputs(self):
+    def test_qcsm_candidate_outputs(self):
         multicoil_kspace = np.ones((3, 8, 8), dtype=np.complex128)
-        out = qcsm_reconstruction_placeholder(multicoil_kspace)
+        out = qcsm_coherence_weighted_fusion(multicoil_kspace)
+        self.assertIn("reconstruction", out)
+        self.assertIn("coherence_defect", out)
+        self.assertIn("quaternion_components", out)
         self.assertEqual(out["reconstruction"].shape, (8, 8))
         self.assertEqual(out["coherence_defect"].shape, (8, 8))
         self.assertEqual(out["quaternion_components"].shape, (4, 8, 8))

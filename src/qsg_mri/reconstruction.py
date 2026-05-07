@@ -10,7 +10,7 @@ from __future__ import annotations
 import numpy as np
 
 from .baselines import baseline_multicoil_from_kspace, inverse_fft2_centered
-from .coherence import coherence_score
+from .coherence import coherence_defect_map_from_fixed_axis_coils, coherence_map_from_fixed_axis_coils
 
 
 def baseline_reconstruction(multicoil_kspace: np.ndarray) -> np.ndarray:
@@ -18,41 +18,52 @@ def baseline_reconstruction(multicoil_kspace: np.ndarray) -> np.ndarray:
     return baseline_multicoil_from_kspace(multicoil_kspace)
 
 
-def qcsm_reconstruction_placeholder(multicoil_kspace: np.ndarray) -> dict[str, np.ndarray]:
-    """Placeholder QCSM-style fusion.
+def qcsm_coherence_weighted_fusion(multicoil_kspace: np.ndarray, eps: float = 1e-12) -> dict[str, np.ndarray]:
+    """Run a first-pass coherence-weighted QCSM candidate reconstruction.
 
-    The function builds per-pixel quaternionic states from magnitude and phase
-    moments, then computes a coherence-defect map for candidate-method
-    comparisons. This is research scaffolding, not clinical validation.
+    This method is for synthetic/offline research use only, not clinically
+    validated, and is designed to produce auditable baseline-vs-candidate
+    artifacts.
     """
+    multicoil_kspace = np.asarray(multicoil_kspace, dtype=np.complex128)
+    if multicoil_kspace.ndim != 3:
+        raise ValueError("multicoil_kspace must have shape (coils, height, width).")
+
     coil_images = np.stack([inverse_fft2_centered(k) for k in multicoil_kspace], axis=0)
-    mag = np.abs(coil_images)
+    magnitude = np.abs(coil_images)
     phase = np.angle(coil_images)
 
-    q_components = np.stack(
+    # Fixed-axis quaternionic components q_c = [mag*cos(phase), mag*sin(phase), 0, 0].
+    q_real = magnitude * np.cos(phase)
+    q_imag = magnitude * np.sin(phase)
+    quaternion_components = np.stack(
         [
-            np.mean(mag * np.cos(phase), axis=0),
-            np.mean(mag * np.sin(phase), axis=0),
-            np.std(mag, axis=0),
-            np.std(phase, axis=0),
+            np.mean(q_real, axis=0),
+            np.mean(q_imag, axis=0),
+            np.zeros_like(q_real[0]),
+            np.zeros_like(q_real[0]),
         ],
         axis=0,
     )
-    fused = np.linalg.norm(q_components, axis=0)
 
-    # Compute coherence at each voxel from fixed-axis per-coil states.
-    coils, height, width = coil_images.shape
-    defect = np.zeros((height, width), dtype=float)
-    for iy in range(height):
-        for ix in range(width):
-            states = np.zeros((coils, 4), dtype=float)
-            states[:, 0] = mag[:, iy, ix] * np.cos(phase[:, iy, ix])
-            states[:, 1] = mag[:, iy, ix] * np.sin(phase[:, iy, ix])
-            c_score = coherence_score(states)
-            defect[iy, ix] = 1.0 - c_score
+    coherence_score_map = coherence_map_from_fixed_axis_coils(coil_images=coil_images, eps=eps)
+    coherence_defect = coherence_defect_map_from_fixed_axis_coils(coil_images=coil_images, eps=eps)
+
+    # Circular-mean phase reference from the complex sum across coils.
+    reference_phase = np.angle(np.sum(coil_images, axis=0))
+    phase_rotation = np.exp(1j * (reference_phase[None, :, :] - phase))
+    aligned_coils = coil_images * phase_rotation
+
+    # Magnitude and coherence-weighted fusion.
+    weights = magnitude * (coherence_score_map[None, :, :] + eps)
+    fused_complex = np.sum(weights * aligned_coils, axis=0) / (np.sum(weights, axis=0) + eps)
+    reconstruction = np.abs(fused_complex)
 
     return {
-        "reconstruction": fused,
-        "coherence_defect": defect,
-        "quaternion_components": q_components,
+        "reconstruction": reconstruction,
+        "coherence_defect": coherence_defect,
+        "quaternion_components": quaternion_components,
     }
+
+
+qcsm_reconstruction_placeholder = qcsm_coherence_weighted_fusion

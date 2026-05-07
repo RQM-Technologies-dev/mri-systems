@@ -19,7 +19,7 @@ testable through code paths, reproducible simulations, and metrics artifacts.
 - `coil_state.py` implements QCSM construction and channel packing/fusion paths.
 - `coherence.py` makes coil agreement/disagreement measurable.
 - `baselines.py` keeps comparison honest against standard methods.
-- `reconstruction.py` holds candidate reconstruction/fusion execution paths.
+- `reconstruction.py` holds first-pass research candidate reconstruction/fusion execution paths.
 - `metrics.py` converts outputs into auditable evidence artifacts.
 - `phantoms.py` enables controlled, repeatable synthetic input cases.
 - `simulations/` turns modules into reproducible benchmark runs.
@@ -57,4 +57,4 @@ testable through code paths, reproducible simulations, and metrics artifacts.
 ## Scope guardrail
 
 The package outputs research metrics only. It is not clinical reconstruction
-software and is not a medical-device product.
+software, is not medical-device software, and does not provide scanner control.
