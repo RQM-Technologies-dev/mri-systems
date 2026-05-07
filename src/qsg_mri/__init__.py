@@ -1,4 +1,8 @@
-"""qsg_mri: research software for quaternionic MRI reconstruction studies."""
+"""qsg_mri: research package for controlled MRI reconstruction comparisons.
+
+This package supports offline benchmark experiments and research metrics only.
+It does not provide clinical validation or scanner-control functionality.
+"""
 
 from .baselines import baseline_multicoil_from_kspace, inverse_fft2_centered, root_sum_of_squares
 from .coherence import coherence_defect, coherence_score

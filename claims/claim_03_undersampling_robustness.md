@@ -1,20 +1,49 @@
 # Claim 03: Undersampling robustness
 
-## Claim
+## Plain-language claim
 
-Quaternionic coherence-aware reconstruction may reduce undersampling-related
-reconstruction error concentration relative to complex-only baselines.
+A coherence-aware candidate reconstruction path may reduce error concentration
+under undersampling compared with standard complex-domain baselines.
 
-## Evidence needed
+## Why an OEM would care
 
-- Synthetic undersampling masks
-- Baseline vs QCSM NMSE/PSNR comparison
-- Error map concentration analysis
+If reconstruction is more stable in undersampled conditions, teams may gain
+flexibility in speed/quality tradeoff studies and workflow tuning.
 
-## Research target
+## Mechanism being tested
 
-5-12% relative NMSE reduction in controlled synthetic scenarios.
+The mechanism evaluates whether quaternionic/coherence-aware fusion better
+handles coupled phase and multichannel behavior when sampling is incomplete.
 
-## Scope note
+## Baseline comparison
 
-Target only. No achieved benchmark is claimed here.
+- Baseline: inverse FFT + RSS on undersampled k-space.
+- Candidate: QCSM/coherence-aware placeholder reconstruction on same input.
+
+## Required simulation
+
+- `simulations/undersampling/run.py`
+- Cartesian undersampling mask with configurable acceleration.
+- Paired baseline/candidate outputs and error diagnostics.
+
+## Metrics
+
+- NMSE (primary target metric)
+- PSNR
+- Artifact energy
+- Mean coherence defect
+
+## Current status
+
+Scaffolded research workflow. No achieved benchmark result is claimed.
+
+## Limitations
+
+- Limited mask family and acceleration settings.
+- Synthetic-only benchmark conditions.
+- Placeholder candidate method may not represent final algorithmic design.
+
+## Technical basis
+
+Measured complex k-space remains the data-fidelity target during candidate
+representation testing.

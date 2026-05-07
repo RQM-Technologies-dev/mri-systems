@@ -1,25 +1,29 @@
 # 05 - Integration path
 
-OEM integration model:
+This repository is organized around an OEM-friendly software integration model:
 
 ```text
-Existing scanner hardware unchanged
-  ↓
-raw complex multicoil k-space
-  ↓
-standard preprocessing
-  ↓
-QSG-MRI quaternionic lift
-  ↓
-coherence-aware fusion / reconstruction / diagnostics
-  ↓
-standard reconstructed image + optional coherence/artifact maps
+Existing MRI scanner
+  → raw complex multicoil k-space
+  → standard preprocessing
+  → QSG-MRI quaternionic lift
+  → coherence-aware fusion/reconstruction/diagnostics
+  → standard image output + optional coherence/artifact maps
 ```
 
-Key integration constraints:
+## Practical integration points
 
-- scanner hardware does not need to change
-- measured input remains standard complex k-space
-- QSG-MRI is a reconstruction and analysis layer
-- evaluation can begin offline on stored raw data
-- OEM integration can start as a research plugin before any clinical deployment
+- No scanner hardware replacement is required.
+- Measured complex k-space remains the input.
+- Existing complex-domain reconstruction stack remains compatible.
+- Initial validation can run as offline replay evaluation.
+- A plugin/API layer can be explored later if controlled benchmark outcomes are
+  promising.
+
+## Suggested adoption sequence
+
+1. Run controlled benchmark scenarios in this repository.
+2. Review baseline vs candidate metrics and diagnostics.
+3. Replay deidentified multicoil data in an offline environment.
+4. Define a narrow integration surface in an existing reconstruction workflow.
+5. Evaluate runtime, maintainability, and product fit before expansion.

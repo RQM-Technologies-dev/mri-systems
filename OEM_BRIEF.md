@@ -1,44 +1,64 @@
-# OEM Brief: Software-Only Quaternionic MRI Upgrade (Research Scope)
+# OEM Brief: Software-Only Upgrade Path for MRI Reconstruction Teams
 
-## The opportunity
+## What is the upgrade?
 
-MRI scanners already produce high-value complex multicoil k-space data, but
-reconstruction quality can degrade when phase, coil geometry, orientation, and
-motion effects interact. `qsg_mri` evaluates whether a quaternionic state model
-improves coherence handling in those coupled conditions.
+`MRI-systems` evaluates a candidate representation layer for reconstruction
+software: quaternionic signal-state modeling (QSG-MRI). The core idea is to
+treat coupled phase, coil geometry, motion/orientation effects, and multicoil
+coherence as one coherence-aware reconstruction problem instead of separate
+correction layers.
 
-## What changes in the reconstruction stack
+## Why is it software-only?
 
-- Add a software-side quaternionic lift after standard preprocessing.
-- Estimate coil-local quaternionic states and coherence scores.
-- Fuse or regularize with coherence-aware logic.
-- Project back to complex-domain data fidelity for measurement consistency.
+- Measured complex k-space remains the input.
+- Existing hardware is unchanged.
+- Existing acquisition physics is unchanged.
+- Existing baseline reconstruction methods remain available for comparison.
+- The upgrade is a software-side layer that can be tested in offline replay.
 
-## What does not change in the scanner
+## Where could this improve existing suites?
 
-- No MRI hardware redesign.
-- No sequence-control or scanner-control changes.
-- Raw measured input remains complex multicoil k-space.
-- Existing reconstruction baselines remain available as references.
+- Multicoil fusion under coil disagreement.
+- Artifact localization via coherence-defect outputs.
+- Undersampling robustness in controlled benchmark tasks.
+- Motion/orientation robustness in stress-test conditions.
+- Optional diagnostics that accompany standard image output.
 
-## Initial target metrics (research targets, not achieved results)
+## How would an OEM test it offline?
 
-- Multicoil fusion: evaluate 5-15% relative error/coherence improvement.
-- Artifact localization: evaluate 10-25% improvement in artifact-region detection.
-- Undersampling robustness: evaluate 5-12% relative NMSE reduction.
-- Motion/orientation robustness: evaluate 10-20% ghosting/artifact reduction in
-  controlled synthetic tests.
+1. Install and run the provided simulation scripts.
+2. Produce baseline output and QCSM/coherence-aware output from the same
+   synthetic input.
+3. Review generated metrics (`metrics.json`), error maps, and coherence-defect
+   maps.
+4. Compare behavior across scenarios before considering data from
+   deidentified raw multicoil studies.
 
-## Why this can be tested offline first
+## What are first measurable success criteria?
 
-- Uses stored raw complex multicoil k-space.
-- Can run as replay/offline reconstruction experiments.
-- Produces paired outputs (baseline vs quaternionic/coherence-aware) and metrics.
-- Keeps scanner-side acquisition unchanged during evidence generation.
+Research targets (not reported results):
 
-## Why RQM Technologies is pursuing this
+- Multicoil fusion: 5-15% target relative improvement in controlled error or
+  coherence metrics.
+- Artifact localization: 10-25% target improvement in controlled artifact-region
+  detection.
+- Undersampling robustness: 5-12% target relative NMSE reduction.
+- Motion/orientation robustness: 10-20% target ghosting/artifact proxy
+  reduction.
+- Integration feasibility: acceptable offline runtime and implementation
+  complexity for plugin/API exploration.
 
-RQM Technologies is pursuing a software-first, evidence-driven path to determine
-whether quaternionic state modeling can improve reconstruction robustness in
-coherence-sensitive scenarios while preserving compatibility with standard MRI
-data and workflows.
+## What is not being claimed?
+
+- No claim of clinical superiority.
+- No claim of regulatory readiness.
+- No claim of scanner-control capability.
+- No claim that quaternionic methods replace complex MRI pipelines.
+
+## Evaluation path for an OEM
+
+1. Run baseline synthetic simulations.
+2. Compare RSS/standard baselines against QCSM outputs.
+3. Inspect metrics and coherence maps.
+4. Decide whether to test on deidentified raw multicoil data.
+5. Explore plugin/API integration with an existing reconstruction workflow.

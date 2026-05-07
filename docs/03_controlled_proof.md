@@ -1,23 +1,33 @@
 # 03 - Controlled proof
 
-This repository includes explicit proof notes to keep the model testable and
-falsifiable.
+In this repository, "proof" means reproducible engineering evidence for a
+software-only upgrade path, not clinical validation.
 
-## Proof obligations
+The evidence model combines:
 
-1. Complex MRI is a fixed-axis quaternionic special case.
-2. Two complex coil channels can be packed into one quaternionic state.
-3. Measured complex k-space remains the data-fidelity target.
-4. Quaternionic latent states must project back to complex measurements.
-5. Coherence defect can be defined as local coil-state disagreement.
+1. mathematical bridge definitions
+2. code implementation in `src/qsg_mri/`
+3. unit tests for core behavior
+4. synthetic simulation scripts
+5. metric outputs (`metrics.json`, maps, summaries)
 
-## Quaternionic Coil-State Model
+## Proof obligations in engineering terms
+
+1. Preserve compatibility with standard complex MRI.
+2. Keep measured complex k-space as the data-fidelity target.
+3. Show that quaternionic state construction and projection are implementable.
+4. Generate controlled baseline-vs-candidate comparisons.
+5. Produce auditable coherence-aware metrics and artifacts.
+
+## Mathematical bridge (review layer)
+
+Per-coil quaternionic state:
 
 \[
 q_c(r) = A_c(r)\left[\cos \phi_c(r) + u_c(r)\sin \phi_c(r)\right]
 \]
 
-## Coherence score and defect
+Coherence score and defect:
 
 \[
 C_{MRI}(r) =
@@ -29,6 +39,5 @@ C_{MRI}(r) =
 D_{coh}(r) = 1 - C_{MRI}(r)
 \]
 
-\(D_{coh}\) is evaluated as a software-side indicator of local disagreement that
-may align with artifact-prone or reconstruction-unstable regions in controlled
-experiments.
+These are used as research metrics in controlled benchmarks and should not be
+interpreted as clinical outcome claims.

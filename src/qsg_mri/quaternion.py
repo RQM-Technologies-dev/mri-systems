@@ -1,4 +1,8 @@
-"""Quaternion utilities represented as NumPy arrays [w, x, y, z]."""
+"""Quaternion utilities for controlled MRI software benchmarking.
+
+The helpers in this module support candidate representation testing against
+complex-domain baselines. They do not imply clinical validation.
+"""
 
 from __future__ import annotations
 
@@ -11,7 +15,7 @@ FIXED_AXIS_I = np.array([1.0, 0.0, 0.0], dtype=float)
 
 
 def as_quaternion(values: np.ndarray | list[float] | tuple[float, float, float, float]) -> QuaternionArray:
-    """Return quaternion array with shape (4,) as [w, x, y, z]."""
+    """Return a normalized shape contract for reproducible test utilities."""
     q = np.asarray(values, dtype=float)
     if q.shape != (4,):
         raise ValueError("Quaternion must have shape (4,) as [w, x, y, z].")
@@ -67,7 +71,7 @@ def _normalize_axis(axis: np.ndarray, eps: float = 1e-12) -> np.ndarray:
 
 
 def from_axis_angle(amplitude: float, phi: float, axis: np.ndarray) -> QuaternionArray:
-    """Construct q = A[cos(phi) + u sin(phi)] for unit axis u."""
+    """Construct q = A[cos(phi) + u sin(phi)] for benchmark state generation."""
     u = _normalize_axis(axis)
     c = float(np.cos(phi))
     s = float(np.sin(phi))
@@ -75,11 +79,11 @@ def from_axis_angle(amplitude: float, phi: float, axis: np.ndarray) -> Quaternio
 
 
 def fixed_axis_complex_state(amplitude: float, phi: float) -> QuaternionArray:
-    """Complex MRI special case with fixed axis u=i -> [A cos(phi), A sin(phi), 0, 0]."""
+    """Return fixed-axis complex special case for backward-compatibility tests."""
     return from_axis_angle(amplitude=amplitude, phi=phi, axis=FIXED_AXIS_I)
 
 
 def quaternion_to_complex_fixed_axis(q: QuaternionArray) -> complex:
-    """Project quaternion to complex value in fixed i-axis plane using (w + i*x)."""
+    """Project quaternion to complex plane for data-fidelity comparisons."""
     q = as_quaternion(q)
     return complex(float(q[0]), float(q[1]))

@@ -1,5 +1,8 @@
 # THEORY
 
+> This file is for technical reviewers. The main README and OEM_BRIEF
+> intentionally present the upgrade path before the equations.
+
 ## 1) Standard complex MRI measurement model
 
 For coil \(c\), measured complex k-space is:

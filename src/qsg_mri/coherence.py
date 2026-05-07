@@ -1,4 +1,8 @@
-"""Coherence metrics for quaternionic coil states."""
+"""Coherence metrics for quaternionic coil states in controlled benchmarks.
+
+Outputs from this module are research diagnostics and should not be interpreted
+as clinical quality markers.
+"""
 
 from __future__ import annotations
 
@@ -11,6 +15,9 @@ def coherence_score(qs: np.ndarray, weights: np.ndarray | None = None, eps: floa
     Args:
         qs: Quaternion states with shape (coils, 4).
         weights: Optional complex/real-like scalar weights with shape (coils,).
+
+    Returns:
+        Coherence score intended for reproducible candidate-method comparisons.
     """
     qs = np.asarray(qs, dtype=float)
     if qs.ndim != 2 or qs.shape[1] != 4:
@@ -28,5 +35,5 @@ def coherence_score(qs: np.ndarray, weights: np.ndarray | None = None, eps: floa
 
 
 def coherence_defect(qs: np.ndarray, weights: np.ndarray | None = None) -> float:
-    """Return D_coh = 1 - C_MRI."""
+    """Return D_coh = 1 - C_MRI as a research defect diagnostic."""
     return float(1.0 - coherence_score(qs=qs, weights=weights))

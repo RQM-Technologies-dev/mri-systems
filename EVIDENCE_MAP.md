@@ -1,7 +1,8 @@
 # EVIDENCE MAP
 
-All ranges below are **research targets** for controlled synthetic/offline
-evaluation. They are not reported as achieved results.
+This table separates proposed value from achieved evidence. Each row is a
+testable hypothesis with a planned evidence path. Target ranges are research
+goals, not reported results.
 
 | Area | Hypothesis | Evidence type | Current status | Target metric | Limitations |
 | --- | --- | --- | --- | --- | --- |
