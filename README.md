@@ -54,8 +54,10 @@ python simulations/phantom_baseline/run.py
 
 - `EXECUTIVE_OVERVIEW.md`: skimmable manager overview.
 - `OEM_BRIEF.md`: decision-maker brief and evaluation path.
+- `TECHNICAL_EVALUATION_GUIDE.md`: practical offline workflow for OEM engineers.
 - `docs/`: narrative-first technical walkthrough.
 - `claims/`: testable product hypotheses and evidence plans.
+- `examples/README.md`: practical script-level example guide.
 - `simulations/`: reproducible controlled benchmark scripts.
 - `src/qsg_mri/`: software package used to generate comparisons and metrics.
 - `THEORY.md` and `proofs/`: mathematical foundation and detailed derivations.

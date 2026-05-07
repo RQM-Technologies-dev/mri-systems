@@ -12,19 +12,47 @@ testable through code paths, reproducible simulations, and metrics artifacts.
 - Generate reproducible research metrics and diagnostics.
 - Support offline evaluation before any workflow integration decision.
 
-## Module map in practical terms
+## Module map and what each module proves
 
-- `quaternion.py`: representation utilities for quaternionic state operations.
-- `kspace.py`: spatial-frequency helpers for centered frequency-domain handling.
-- `coil_state.py`: QCSM state construction and multicoil packing/fusion helpers.
-- `coherence.py`: coherence score and defect metrics for disagreement analysis.
-- `baselines.py`: RSS/FFT reference methods for standard complex pipelines.
-- `reconstruction.py`: baseline reconstruction and candidate coherence-aware
-  placeholder path.
-- `metrics.py`: NMSE/PSNR/artifact-energy metrics for controlled benchmark
-  reporting.
-- `phantoms.py`: synthetic data generators used by reproducible simulation runs.
-- `simulations/`: reproducible evidence generation scripts and output artifacts.
+- `quaternion.py` proves the representation is implementable in software.
+- `kspace.py` preserves standard Fourier-space interpretation and handling.
+- `coil_state.py` implements QCSM construction and channel packing/fusion paths.
+- `coherence.py` makes coil agreement/disagreement measurable.
+- `baselines.py` keeps comparison honest against standard methods.
+- `reconstruction.py` holds candidate reconstruction/fusion execution paths.
+- `metrics.py` converts outputs into auditable evidence artifacts.
+- `phantoms.py` enables controlled, repeatable synthetic input cases.
+- `simulations/` turns modules into reproducible benchmark runs.
+
+## Proof burden by code path
+
+### `claim_01_multicoil_fusion`
+
+- `coil_state.py`
+- `baselines.py`
+- `simulations/multicoil_fusion`
+- `metrics.json`
+
+### `claim_02_artifact_coherence_mapping`
+
+- `coherence.py`
+- `simulations/artifact_localization`
+- `coherence_defect_map`
+- artifact localization metrics
+
+### `claim_03_undersampling_robustness`
+
+- `kspace.py`
+- `reconstruction.py`
+- `simulations/undersampling`
+- NMSE/PSNR comparison
+
+### `claim_04_motion_orientation_correction`
+
+- `coil_state.py`
+- `coherence.py`
+- `simulations/motion_artifacts`
+- artifact_energy / ghosting proxy
 
 ## Scope guardrail
 

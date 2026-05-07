@@ -1,43 +1,94 @@
 # 03 - Controlled proof
 
 In this repository, "proof" means reproducible engineering evidence for a
-software-only upgrade path, not clinical validation.
+software-only reconstruction candidate. It does **not** mean clinical proof.
 
-The evidence model combines:
+This validation model is intentionally practical: code, tests, simulation
+artifacts, and metrics carry the burden of evidence.
 
-1. mathematical bridge definitions
-2. code implementation in `src/qsg_mri/`
-3. unit tests for core behavior
-4. synthetic simulation scripts
-5. metric outputs (`metrics.json`, maps, summaries)
+## What "controlled proof" means here
 
-## Proof obligations in engineering terms
+Controlled proof answers a narrow technical question:
 
-1. Preserve compatibility with standard complex MRI.
-2. Keep measured complex k-space as the data-fidelity target.
-3. Show that quaternionic state construction and projection are implementable.
-4. Generate controlled baseline-vs-candidate comparisons.
-5. Produce auditable coherence-aware metrics and artifacts.
+- Can a QSG-MRI candidate be evaluated fairly against existing complex
+  reconstruction workflows?
+- Can the evaluation be repeated with the same inputs and settings?
+- Can outputs be audited by engineering teams before any integration decision?
 
-## Mathematical bridge (review layer)
+## Engineering validation ladder
 
-Per-coil quaternionic state:
+### Level 0 - Mathematical compatibility
 
-\[
-q_c(r) = A_c(r)\left[\cos \phi_c(r) + u_c(r)\sin \phi_c(r)\right]
-\]
+Goal: ensure the candidate does not break core MRI data assumptions.
 
-Coherence score and defect:
+- Standard complex MRI is preserved as a fixed-axis case.
+- Measured complex k-space remains the data-fidelity target.
+- Mathematical definitions remain in `THEORY.md` and `proofs/`; implementation
+  docs stay operational.
 
-\[
-C_{MRI}(r) =
-\frac{\left\|\sum_c \alpha_c(r) q_c(r)\right\|}
-{\sum_c |\alpha_c(r)|\|q_c(r)\| + \epsilon}
-\]
+Exit criterion:
+- The bridge from complex representation to candidate state is specified and
+  does not replace the underlying measured complex data model.
 
-\[
-D_{coh}(r) = 1 - C_{MRI}(r)
-\]
+### Level 1 - Unit-test proof
 
-These are used as research metrics in controlled benchmarks and should not be
-interpreted as clinical outcome claims.
+Goal: verify core software behavior is correct and stable in isolation.
+
+Coverage focus:
+- quaternion operations
+- fixed-axis complex bridge behavior
+- k-space helper behavior
+- coherence score behavior
+
+Exit criterion:
+- Unit tests for these components run deterministically and pass.
+
+### Level 2 - Synthetic phantom proof
+
+Goal: run baseline-vs-candidate reconstruction on controlled data and emit
+auditable artifacts.
+
+Expected outputs:
+- baseline reconstruction
+- QCSM/coherence-aware candidate output
+- error map
+- coherence-defect map (where applicable)
+- `metrics.json`
+- `summary.md`
+
+Exit criterion:
+- Artifacts are generated from a known phantom/config and can be replayed by
+  another engineer.
+
+### Level 3 - Controlled stress tests
+
+Goal: evaluate failure behavior under realistic software stressors before any
+external data replay.
+
+Stress scenarios:
+- coil disagreement
+- undersampling
+- synthetic motion
+- artifact injection
+
+Exit criterion:
+- Baseline and candidate are compared side-by-side under each stress scenario
+  with machine-readable metrics and diagnostics.
+
+### Level 4 - Offline OEM replay
+
+Goal: evaluate technical fit in an OEM engineering environment without scanner
+control changes.
+
+Scope:
+- deidentified raw multicoil k-space replay
+- comparison against OEM internal baseline
+- runtime and integration complexity evaluation
+
+Exit criterion:
+- OEM team can decide whether further integration exploration is justified.
+
+## Scope boundary
+
+This ladder is an engineering validation ladder, not a clinical validation
+framework. Success at any level supports technical evaluation decisions only.
