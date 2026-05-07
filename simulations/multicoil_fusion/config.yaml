@@ -1,0 +1,5 @@
+seed: 11
+size: 96
+coils: 8
+phase_jitter: 0.8
+output_dir: outputs

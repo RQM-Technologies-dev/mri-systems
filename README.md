@@ -1,33 +1,89 @@
-# MRI-systems
+# qsg_mri in MRI-systems
 
-Quaternion-native research software for MRI reconstruction, multicoil fusion, artifact analysis, and phase/coherence modeling.
+`qsg_mri` is research software for MRI reconstruction and medical imaging experiments.
+It evaluates a software-only quaternionic upgrade path for multicoil complex MRI workflows.
 
-MRI systems acquire complex-valued k-space data from phase-sensitive electromagnetic resonance measurements. Modern MRI reconstruction must also manage multichannel receiver coils, coil sensitivity maps, field variation, motion, undersampling, and artifact structure.
+This repository is:
 
-MRI-systems explores a quaternionic upgrade path: representing local MRI signal structure as a coherent geometric state rather than as disconnected complex channels and correction layers.
+- for MRI reconstruction and imaging research software
+- not MRI hardware
+- not a clinical diagnostic product
+- not FDA-cleared medical-device software
+- not a source of clinical claims
 
-This repository is research software. It does not provide medical diagnosis, clinical recommendations, scanner control, or regulated medical-device functionality.
+## What this repository does
 
-## Canonical model baseline
+The project tests whether Quaternionic Spectral Geometry (QSG-MRI) can improve
+standard software reconstruction workflows by representing phase, coil geometry,
+orientation, motion, and multichannel coherence in one state model.
 
-For coil \(c\), measured MRI k-space data is modeled as:
+Measured data remains standard complex multicoil k-space.
+
+## Why MRI reconstruction is a coherence problem
+
+MRI reconstruction starts from phase-sensitive complex measurements. A common
+forward model for coil \(c\) is:
 
 \[
-y_c(k) = \int_\Omega \rho(r) s_c(r)e^{-i2\pi k\cdot r}\,dr + \epsilon_c(k)
+y_c(k) = \int_\Omega \rho(r) s_c(r)\exp(-i 2\pi k\cdot r)\,dr + \epsilon_c(k)
 \]
 
-The practical reconstruction goal is still to recover image content from sampled complex k-space data. This project tests whether lifting internal reconstruction state into quaternionic form can improve coherence-sensitive failure modes while remaining compatible with existing scanners.
+where \(k\) is a spatial-frequency coordinate (not anatomical radius), \(r\) is
+image-space position, \(\rho\) is tissue magnetization, \(s_c\) is coil
+sensitivity, and \(\epsilon_c\) is noise.
 
-## Core thesis
+Modern reconstruction quality is affected by:
 
-- Complex numbers are sufficient for single-axis phase modeling.
-- MRI errors are often coherence errors across phase, coil geometry, orientation, and motion.
-- Quaternionic methods may help when those coupled coherence terms dominate quality loss.
+- multichannel coil disagreement
+- sensitivity-map uncertainty
+- undersampling and motion artifacts
+- local coherence loss and instability
 
-## First MVP target
+## What the quaternionic upgrade changes
 
-Quaternionic multicoil fusion for MRI reconstruction, benchmarked against:
+Standard local complex signal:
 
-- inverse FFT + root-sum-of-squares (RSS)
-- sensitivity-map-informed baseline (SENSE-style where appropriate)
-- Quaternionic Coil-State Model (QCSM) fusion
+\[
+z(r) = A(r)\exp(i\phi(r))
+\]
+
+Quaternionic lift:
+
+\[
+q(r) = A(r)\left[\cos\phi(r) + u(r)\sin\phi(r)\right]
+\]
+
+with local unit axis \(u(r)\).  
+Credibility bridge: standard complex MRI is the fixed-axis special case
+\(u(r)=i\).
+
+## Current status
+
+- Mathematical notes and evidence map for OEM evaluation are included.
+- Synthetic simulation scaffolds are runnable and produce reproducible artifacts.
+- `qsg_mri` package provides baseline and placeholder quaternionic components.
+- No benchmark claims are reported as achieved; all ranges are research targets.
+
+## Quickstart
+
+```bash
+python -m pip install -e .
+python -m pytest -q
+python simulations/phantom_baseline/run.py
+```
+
+## Repository map
+
+- `OEM_BRIEF.md`: decision-maker summary
+- `THEORY.md`: MRI and quaternionic model definitions
+- `EVIDENCE_MAP.md`: hypothesis-to-evidence tracking
+- `claims/` + `proofs/`: explicit research claims and derivations
+- `simulations/`: synthetic controlled demonstrations
+- `src/qsg_mri/`: Python package
+- `tests/`: unit tests for core behavior
+- `docs/`: end-to-end technical narrative for OEM teams
+
+## Safety and regulatory note
+
+This repository is for research use only. It is not for diagnosis, patient care,
+or scanner control. See `SAFETY_AND_REGULATORY.md` for full scope limits.

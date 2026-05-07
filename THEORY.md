@@ -2,77 +2,97 @@
 
 ## 1) Standard complex MRI measurement model
 
-For receiver coil \(c\), MRI measurements are complex-valued k-space samples:
+For coil \(c\), measured complex k-space is:
 
 \[
-y_c(k) = \int_\Omega \rho(r) s_c(r)e^{-i2\pi k\cdot r}\,dr + \epsilon_c(k)
+y_c(k) = \int_\Omega \rho(r) s_c(r) \exp(-i 2\pi k\cdot r) dr + \epsilon_c(k)
 \]
 
+Definitions:
+
 - \(y_c(k)\): measured k-space data for coil \(c\)
-- \(k\): spatial-frequency coordinate
+- \(k\): Fourier-space / spatial-frequency coordinate
 - \(r\): image-space coordinate
-- \(\rho(r)\): underlying magnetization image
+- \(\rho(r)\): underlying image / tissue magnetization
 - \(s_c(r)\): coil sensitivity map
-- \(\epsilon_c(k)\): noise term
+- \(\epsilon_c(k)\): noise
 
-The baseline inverse problem is to recover image-space structure from sampled complex k-space data.
+The model and data fidelity remain complex-valued at measurement level.
 
-## 2) Clarifying k-space coordinates
+## 2) k-space interpretation
 
-The coordinate \(k\) is Fourier-space, not anatomical radius.
+\(k\) is not an anatomical radius.
 
-- \(k=0\): low spatial frequencies (broad contrast, smooth structure)
-- Large \(|k|\): high spatial frequencies (edges, fine detail)
-- Direction of \(k\): direction of spatial variation
-
-Moving outward in k-space means moving toward finer spatial detail, not moving outward in the body.
+- \(k=0\): low spatial frequency content (global contrast)
+- larger \(|k|\): finer spatial detail
+- direction in \(k\)-space: direction of spatial variation
 
 ## 3) Quaternionic lift
 
-Standard local complex representation:
+Standard local signal:
 
 \[
-z(r)=A(r)e^{i\phi(r)}
+z(r) = A(r)\exp(i \phi(r))
 \]
 
-Quaternionic lift:
+Quaternionic state:
 
 \[
-q(r)=A(r)[\cos\phi(r)+u(r)\sin\phi(r)]
+q(r) = A(r)\left[\cos \phi(r) + u(r)\sin \phi(r)\right]
 \]
+
+where:
 
 - \(A(r)\): local magnitude
 - \(\phi(r)\): local phase
 - \(u(r)\): local unit imaginary quaternion axis
+- \(q(r)\): local quaternionic resonance state
 
-The standard complex model is the fixed-axis special case \(u(r)=i\). This project treats quaternionic MRI as a testable generalization that contains conventional complex MRI.
+Credibility bridge:
+
+\[
+u(r)=i \Rightarrow q(r)\ \text{reduces to the standard complex model}
+\]
+
+Standard complex MRI is therefore a fixed-axis special case.
 
 ## 4) Quaternionic Coil-State Model (QCSM)
 
-Define each coil-local state as:
+Per-coil local state:
 
 \[
-q_c(r)=A_c(r)[\cos\phi_c(r)+u_c(r)\sin\phi_c(r)]
+q_c(r) = A_c(r)\left[\cos \phi_c(r) + u_c(r)\sin \phi_c(r)\right]
 \]
 
-Reconstruction seeks a coherent quaternionic field whose projections remain consistent with measured complex k-space data.
+QCSM represents multicoil structure as a set of coupled quaternionic states with
+explicit projection back to measured complex data.
 
-## 5) Data-fidelity framing
+## 5) Coherence metric
 
-Scanners still measure complex RF/k-space data; they do not directly measure full quaternion states.
-
-High-level objective:
+Define weighted local coherence:
 
 \[
-\hat q = \arg\min_q\,[\text{data fidelity} + \text{quaternionic regularity} + \text{coil-state coherence}]
+C_{MRI}(r) =
+\frac{\left\|\sum_c \alpha_c(r) q_c(r)\right\|}
+{\sum_c |\alpha_c(r)|\|q_c(r)\| + \epsilon}
 \]
 
-The data-fidelity term enforces agreement with measured complex data after projection from quaternionic state space.
+Coherence defect:
 
-## 6) Why this might help
+\[
+D_{coh}(r) = 1 - C_{MRI}(r)
+\]
 
-Standard pipelines often separate phase handling, coil combination, orientation effects, and motion correction into independent modules. QCSM aims to model these coupled effects in one state representation. Expected value is strongest where reconstruction failure is driven by coherence errors across phase, coil geometry, orientation, and motion.
+\(D_{coh}\) is a research metric for local coil-state disagreement and potential
+artifact-prone instability.
 
-## 7) Research status
+## 6) Data-fidelity requirement
 
-This repository is a research program and hypothesis test, not proven clinical superiority. Current targets are controlled benchmarks for multicoil fusion, artifact localization, undersampling robustness, and motion sensitivity.
+Measured complex k-space remains the target. Quaternionic internal states must
+project to complex measurements for fidelity checks. This repository does not
+replace measured data with synthetic quaternion-only observations.
+
+## 7) Scope
+
+This is software research only. It does not provide clinical diagnosis, scanner
+control, or regulatory-cleared medical-device functionality.

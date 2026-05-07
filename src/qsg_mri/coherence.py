@@ -1,0 +1,32 @@
+"""Coherence metrics for quaternionic coil states."""
+
+from __future__ import annotations
+
+import numpy as np
+
+
+def coherence_score(qs: np.ndarray, weights: np.ndarray | None = None, eps: float = 1e-12) -> float:
+    """Compute C_MRI for a local set of coil quaternion states.
+
+    Args:
+        qs: Quaternion states with shape (coils, 4).
+        weights: Optional complex/real-like scalar weights with shape (coils,).
+    """
+    qs = np.asarray(qs, dtype=float)
+    if qs.ndim != 2 or qs.shape[1] != 4:
+        raise ValueError("qs must have shape (coils, 4).")
+    if weights is None:
+        alpha = np.ones(qs.shape[0], dtype=float)
+    else:
+        alpha = np.asarray(weights, dtype=float)
+        if alpha.shape != (qs.shape[0],):
+            raise ValueError("weights must have shape (coils,).")
+
+    numerator = np.linalg.norm(np.sum(alpha[:, None] * qs, axis=0))
+    denominator = float(np.sum(np.abs(alpha) * np.linalg.norm(qs, axis=1))) + eps
+    return float(numerator / denominator)
+
+
+def coherence_defect(qs: np.ndarray, weights: np.ndarray | None = None) -> float:
+    """Return D_coh = 1 - C_MRI."""
+    return float(1.0 - coherence_score(qs=qs, weights=weights))

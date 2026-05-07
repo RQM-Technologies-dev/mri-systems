@@ -1,0 +1,5 @@
+seed: 17
+size: 96
+coils: 8
+acceleration: 4
+output_dir: outputs
